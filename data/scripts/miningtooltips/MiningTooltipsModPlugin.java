@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashMap;
@@ -35,7 +34,8 @@ import java.util.Set;
  * plugin loads fine with either disabled.
  *
  * Kept Janino-friendly (loose script): no lambdas, no varargs helpers, explicit casts.
- * LunaLib is reached through reflection so the script still compiles when it isn't installed.
+ * LunaLib values are read from the file it saves them to, not through its classes: Starsector's
+ * script sandbox blocks reflection, and a direct reference wouldn't compile without LunaLib.
  */
 public class MiningTooltipsModPlugin extends BaseModPlugin {
 
@@ -49,7 +49,8 @@ public class MiningTooltipsModPlugin extends BaseModPlugin {
 	private static final String MOD_ID = "mining_strength_tooltips";
 	private static final String OWN_CONFIG = "data/config/miningtooltips.json";
 	private static final String LUNA_ID = "lunalib";
-	private static final String LUNA_SETTINGS_CLASS = "lunalib.lunaSettings.LunaSettings";
+	// LunaLib stores values via LazyLib's JSONUtils in saves/common/LunaSettings/<modId>.json.data
+	private static final String LUNA_SAVE_FILE = "LunaSettings/" + MOD_ID + ".json";
 
 	@Override
 	public void onApplicationLoad() throws Exception {
@@ -100,11 +101,14 @@ public class MiningTooltipsModPlugin extends BaseModPlugin {
 	protected boolean getToggle(SettingsAPI settings, String key) {
 		if (settings.getModManager().isModEnabled(LUNA_ID)) {
 			try {
-				Class luna = settings.getScriptClassLoader().loadClass(LUNA_SETTINGS_CLASS);
-				Method getBoolean = luna.getMethod("getBoolean", new Class[] {String.class, String.class});
-				Object value = getBoolean.invoke(null, new Object[] {MOD_ID, "mst_" + key});
-				if (value instanceof Boolean) return ((Boolean) value).booleanValue();
-			} catch (Throwable ex) {
+				if (settings.fileExistsInCommon(LUNA_SAVE_FILE)) {
+					String raw = settings.readTextFileFromCommon(LUNA_SAVE_FILE);
+					if (raw != null && raw.trim().length() > 0) {
+						JSONObject saved = new JSONObject(raw);
+						if (saved.has("mst_" + key)) return saved.optBoolean("mst_" + key, true);
+					}
+				}
+			} catch (Exception ex) {
 				log.warn("Failed to read LunaLib setting mst_" + key + ", falling back to " + OWN_CONFIG, ex);
 			}
 		}
