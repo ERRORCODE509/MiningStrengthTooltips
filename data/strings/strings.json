@@ -1,0 +1,8 @@
+{
+	"miningtooltips":{
+		# stat block line; the value is appended after a space
+		"miningStrength":"Mining strength:",
+		# description paragraph; %s is replaced with the value
+		"descriptionLine":"Mining strength: %s"
+	}
+}

@@ -1,0 +1,5 @@
+fieldID,fieldName,fieldType,defaultValue,secondaryValue,fieldDescription,minValue,maxValue,tab
+mst_header,Mining Strength Tooltips,Header,Mining Strength Tooltips,,,,,
+mst_restartNote,Restart note,Text,Changes to these settings only take effect after the game is [restarted].,,,,,
+mst_showInStatBlock,Show in weapon stat block (requires restart),Boolean,true,,"Adds a highlighted ""Mining strength"" line to the ancillary section of the weapon stat block. Change is only applied when the game is [restarted].",,,
+mst_showInDescription,Show in weapon description (requires restart),Boolean,true,,"Adds a ""Mining strength"" paragraph to the end of the weapon's description. Change is only applied when the game is [restarted].",,,

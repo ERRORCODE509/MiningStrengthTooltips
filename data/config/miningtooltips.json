@@ -1,0 +1,10 @@
+{
+	# Used only when LunaLib is NOT enabled. With LunaLib, change these in its in-game
+	# settings menu instead (F2 in the campaign, or "Mod Settings" when starting a new game).
+	# Either way, changes take effect after restarting the game.
+
+	# Line in the ancillary section of the weapon stat block
+	"showInStatBlock":true,
+	# Paragraph appended to the end of the weapon's description text
+	"showInDescription":true
+}

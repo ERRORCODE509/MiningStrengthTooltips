@@ -1,0 +1,10 @@
+{
+	"id":"mining_strength_tooltips",
+	"name":"Mining Strength Tooltips",
+	"author":"ERROR_CODE 509",
+	"version":"1.0.0",
+	"description":"Shows each weapon's Nexerelin mining strength in its stat block and description. Toggles are in LunaLib's settings menu (optional). Does nothing if Nexerelin is not enabled. Safe to add or remove mid-game.",
+	"gameVersion":"0.98a-RC7",
+	"utility":"true",
+	"modPlugin":"data.scripts.miningtooltips.MiningTooltipsModPlugin"
+}
